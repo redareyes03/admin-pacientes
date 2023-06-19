@@ -31,7 +31,7 @@ import Alerta from './Alerta.vue'
         }
     })
 
-    const emits = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas' ])
+    const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente' ])
     
     const validar = () => {
         if(Object.values(props).includes('')){
@@ -40,6 +40,8 @@ import Alerta from './Alerta.vue'
             alerta.display = true;
             return
         }
+
+        emit('guardar-paciente')
     }
 </script>
 

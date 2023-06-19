@@ -12,6 +12,9 @@ const paciente = reactive({
 })
 
 const pacientes = ref([])
+
+const guardarPaciente = () => pacientes.value.push(paciente)
+
 </script>
 
 <template>
@@ -24,11 +27,13 @@ const pacientes = ref([])
       v-model:propietario="paciente.propietario"
       v-model:email="paciente.email"
       v-model:alta="paciente.alta"
-      v-model:sintomas="paciente.sintomas" />
+      v-model:sintomas="paciente.sintomas"
+      @guardar-paciente="guardarPaciente" />
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">
         <h3 class="font-black text-3xl text-center">Administra tus pacientes</h3>
-        <div v-if="pacientes.length"></div>
+        <div v-if="pacientes.length" v-for="infoPaciente in pacientes">
+        </div>
         <div v-else>
           <h2 class="text-center text-2xl mt-20">No hay pacientes</h2>
         </div>
