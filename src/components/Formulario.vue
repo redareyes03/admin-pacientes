@@ -1,17 +1,43 @@
 <script setup>
 import { reactive } from 'vue';
+import Alerta from './Alerta.vue'
     
-    const paciente = reactive({
-        mascota: '',
-        propietario : '',
-        email: '',
-        alta: '',
-        sintomas: ''
+    const alerta = reactive({
+        tipo: '',
+        mensaje: '',
+        display: false
     })
 
+    const props = defineProps({
+        mascota: {
+            type: String,
+            required: true
+        },
+        propietario: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        alta: {
+            type: String,
+            required: true
+        },
+        sintomas: {
+            type: String,
+            required: true
+        }
+    })
+
+    const emits = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas' ])
+    
     const validar = () => {
-        if(Object.values(paciente).includes('')){
-            
+        if(Object.values(props).includes('')){
+            alerta.mensaje = "Todos los campos son obligatorios"
+            alerta.tipo = "error";
+            alerta.display = true;
             return
         }
     }
@@ -40,23 +66,28 @@ import { reactive } from 'vue';
                 id="mascota"
                 placeholder="Nombre de la mascota"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
-                v-model="paciente.mascota"
-                >
+                :value="mascota"
+                @input="$emit('update:mascota', $event.target.value)"
+               >
             </div>
+
             <div class="mb-5">
                 <label 
                     for="propietario"
                     class="block text-gray-700 uppercase font-bold">
                     Nombre propietario
                 </label>
+                
                 <input 
                 type="text"
                 id="propietario"
                 placeholder="Nombre del propietario"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
-                v-model="paciente.propietario"
+                :value="propietario"
+                @input="$emit('update:propietario', $event.target.value)"
                >
             </div>
+
             <div class="mb-5">
                 <label 
                     for="email"
@@ -69,8 +100,11 @@ import { reactive } from 'vue';
                 id="email"
                 placeholder="Email del propietario"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
-                v-model="paciente.email">
+                :value="email"
+                @input="$emit('update:email', $event.target.value)"
+               >
             </div>
+
             <div class="mb-5">
                 <label 
                     for="alta"
@@ -81,9 +115,12 @@ import { reactive } from 'vue';
                 <input 
                 type="date"
                 id="alta"
-                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"                
-                v-model="paciente.alta">
+                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
+                :value="alta"
+                @input="$emit('update:alta', $event.target.value)"
+                >
             </div>
+
             <div class="mb-5">
                 <label 
                     for="sintomas"
@@ -94,13 +131,19 @@ import { reactive } from 'vue';
                 <textarea
                 id="sintomas"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none resize-none h-30"
-                v-model="paciente.sintomas" />
+                :value="sintomas"
+                @input="$emit('update:sintomas', $event.target.value)"
+                />
             </div>
 
             <input 
             type="submit"
             class="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
             value="registrar paciente">
+
+            <Alerta 
+            v-if="alerta.display"
+            :alerta="alerta"/> 
         </form>
     </div>
 </template>
