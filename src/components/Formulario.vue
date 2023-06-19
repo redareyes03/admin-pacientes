@@ -2,8 +2,19 @@
 import { reactive } from 'vue';
     
     const paciente = reactive({
-        nombre : ''
+        mascota: '',
+        propietario : '',
+        email: '',
+        alta: '',
+        sintomas: ''
     })
+
+    const validar = () => {
+        if(Object.values(paciente).includes('')){
+            
+            return
+        }
+    }
 </script>
 
 <template>
@@ -15,7 +26,9 @@ import { reactive } from 'vue';
             <span class="font-bold text-indigo-600">Administralos</span>
         </p>
 
-        <form class="bg-white shadow-md rounded-lg py-10 px-5 mb-10">
+        <form 
+        class="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
+        @submit.prevent="validar">
             <div class="mb-5">
                 <label 
                     for="mascota"
@@ -27,7 +40,7 @@ import { reactive } from 'vue';
                 id="mascota"
                 placeholder="Nombre de la mascota"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
-
+                v-model="paciente.mascota"
                 >
             </div>
             <div class="mb-5">
@@ -41,6 +54,7 @@ import { reactive } from 'vue';
                 id="propietario"
                 placeholder="Nombre del propietario"
                 class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
+                v-model="paciente.propietario"
                >
             </div>
             <div class="mb-5">
@@ -54,7 +68,8 @@ import { reactive } from 'vue';
                 type="email"
                 id="email"
                 placeholder="Email del propietario"
-                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none">
+                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"
+                v-model="paciente.email">
             </div>
             <div class="mb-5">
                 <label 
@@ -66,7 +81,8 @@ import { reactive } from 'vue';
                 <input 
                 type="date"
                 id="alta"
-                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none">
+                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none"                
+                v-model="paciente.alta">
             </div>
             <div class="mb-5">
                 <label 
@@ -77,7 +93,8 @@ import { reactive } from 'vue';
 
                 <textarea
                 id="sintomas"
-                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none resize-none h-30" />
+                class="border-2 w-full mt-2 p-2 placeholder-gray-400 rounded-md outline-none resize-none h-30"
+                v-model="paciente.sintomas" />
             </div>
 
             <input 
