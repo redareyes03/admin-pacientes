@@ -38,10 +38,16 @@ import Alerta from './Alerta.vue'
             alerta.mensaje = "Todos los campos son obligatorios"
             alerta.tipo = "error";
             alerta.display = true;
+            setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000 )
             return
         }
 
         emit('guardar-paciente')
+        alerta.mensaje = "Paciente guardado!"
+        alerta.tipo="exito"
+        alerta.display=true
+        
+        setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000 )
     }
 </script>
 

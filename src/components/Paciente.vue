@@ -1,41 +1,48 @@
 <script setup>
+
+const props = defineProps({
+    paciente: {
+        type: Object,
+        required: true
+    }
+})
 </script>
 
 <template>
     <div class="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded-xl">
         <p class="font-bold mb-3 text-gray-700 uppercase">ID:
             <span class="font-normal normal-case">
-            
+                {{ paciente.id }}
             </span>
         </p>
 
         <p class="font-bold mb-3 text-gray-700 uppercase">Nombre:
             <span class="font-normal normal-case">
-            
+                {{ paciente.mascota }}
             </span>
         </p>
 
         <p class="font-bold mb-3 text-gray-700 uppercase">Propietario: 
             <span class="font-normal normal-case">
-            
+                {{ paciente.propietario }}
             </span>
         </p>
 
         <p class="font-bold mb-3 text-gray-700 uppercase">Email: 
             <span class="font-normal normal-case">
-            
+                {{ paciente.email }}
             </span>
         </p>
 
         <p class="font-bold mb-3 text-gray-700 uppercase">Fecha Alta:
             <span class="font-normal normal-case">
-            
+                {{ paciente.alta }}
             </span>
         </p>
 
         <p class="font-bold mb-3 text-gray-700 uppercase">Síntomas:
             <span class="font-normal normal-case">
-            
+                {{ paciente.sintomas }}
             </span>
         </p>
 
