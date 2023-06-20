@@ -17,16 +17,26 @@ const paciente = reactive({
 const pacientes = ref([])
 
 const guardarPaciente = () => {
-    pacientes.value.push({...paciente, id: uid()})
+    if(paciente.id){ //Edit mode
+      const indexToEdit = pacientes.value.findIndex(({id}) => id === paciente.id)
+      pacientes.value[indexToEdit] = {...paciente}
+    }else{
+      pacientes.value.push({...paciente, id: uid()})
+    }
     Object.assign(paciente, {
-    mascota: '',
-    propietario: '',
-    email: '',
-    alta: '',
-    sintomas: ''
-  })
+      id: '',
+      mascota: '',
+      propietario: '',
+      email: '',
+      alta: '',
+      sintomas: ''
+    })
 }
 
+const editarPaciente = (id) => {
+  const pacienteEditar = pacientes.value.filter((paciente) => paciente.id === id)[0]
+  Object.assign(paciente, pacienteEditar);
+}
 </script>
 
 <template>
@@ -50,7 +60,9 @@ const guardarPaciente = () => {
         </p>
         <div v-if="pacientes.length" v-for="infoPaciente in pacientes">
           <Paciente
-          :paciente="infoPaciente"/>
+          :paciente="infoPaciente"
+          @editar-paciente="editarPaciente"
+          />
         </div>
         <div v-else>
           <h2 class="text-center text-2xl mt-20">No hay pacientes</h2>

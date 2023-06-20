@@ -31,6 +31,7 @@ import Alerta from './Alerta.vue'
         }
     })
 
+
     const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente' ])
     
     const validar = () => {
