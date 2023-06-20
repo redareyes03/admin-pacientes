@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive} from 'vue';
+import { ref, reactive, onMounted, watch} from 'vue';
 import {v4 as uid} from 'uuid'
 import Header from './components/Header.vue'
 import Formulario from './components/Formulario.vue'
@@ -13,6 +13,10 @@ const alerta = reactive({
 
 const modificarAlerta = (nuevaAlerta) => Object.assign(alerta, nuevaAlerta);
 
+const modo = ref('registrar')
+
+const modificarModo = (nuevoModo) => modo.value = nuevoModo
+
 const paciente = reactive({
   id: null,
   mascota: '',
@@ -24,7 +28,22 @@ const paciente = reactive({
 
 const pacientes = ref([])
 
-const modo = ref('registrar')
+const sincronizarPacientes = () => {
+  window.localStorage.setItem('pacientes', JSON.stringify(pacientes.value))
+}
+
+onMounted(() => {
+  const pacientesLocalStorage = JSON.parse(window.localStorage.getItem('pacientes'))
+  if(!pacientesLocalStorage){
+    window.localStorage.setItem('pacientes', JSON.stringify([]));
+  }
+  else{
+    pacientes.value = pacientesLocalStorage
+  }
+})
+
+watch(pacientes, () => sincronizarPacientes(), {deep: true});
+
 
 const guardarPaciente = () => {
     if(paciente.id){ //Edit mode
@@ -59,7 +78,6 @@ const eliminarPaciente = (id) => {
   setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000)
 }
 
-const modificarModo = (nuevoModo) => modo.value = nuevoModo
 </script>
 
 <template>
