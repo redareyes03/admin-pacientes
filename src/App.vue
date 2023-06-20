@@ -16,6 +16,8 @@ const paciente = reactive({
 
 const pacientes = ref([])
 
+const modo = ref('registrar')
+
 const guardarPaciente = () => {
     if(paciente.id){ //Edit mode
       const indexToEdit = pacientes.value.findIndex(({id}) => id === paciente.id)
@@ -34,9 +36,12 @@ const guardarPaciente = () => {
 }
 
 const editarPaciente = (id) => {
+  modo.value = 'editar'
   const pacienteEditar = pacientes.value.filter((paciente) => paciente.id === id)[0]
   Object.assign(paciente, pacienteEditar);
 }
+
+const modificarModo = (nuevoModo) => modo.value = nuevoModo
 </script>
 
 <template>
@@ -50,6 +55,8 @@ const editarPaciente = (id) => {
       v-model:email="paciente.email"
       v-model:alta="paciente.alta"
       v-model:sintomas="paciente.sintomas"
+      :modo="modo"
+      @modificar-modo="modificarModo"
       @guardar-paciente="guardarPaciente" />
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">

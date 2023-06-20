@@ -28,11 +28,15 @@ import Alerta from './Alerta.vue'
         sintomas: {
             type: String,
             required: true
+        },
+        modo: {
+            type: String, 
+            required: true
         }
     })
 
 
-    const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente' ])
+    const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente', 'modificar-modo' ])
     
     const validar = () => {
         if(Object.values(props).includes('')){
@@ -44,10 +48,14 @@ import Alerta from './Alerta.vue'
         }
 
         emit('guardar-paciente')
-        alerta.mensaje = "Paciente guardado!"
+        if(props.modo === "editar"){
+            alerta.mensaje = "Paciente actualizado!"
+        }else{
+            alerta.mensaje = "Paciente guardado!"
+        }
         alerta.tipo="exito"
         alerta.display=true
-        
+        emit('modificar-modo', 'registrar')
         setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000 )
     }
 </script>
@@ -148,7 +156,7 @@ import Alerta from './Alerta.vue'
             <input 
             type="submit"
             class="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-            value="registrar paciente">
+            :value="modo + ' paciente'">
 
             <Alerta 
             v-if="alerta.display"
