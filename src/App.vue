@@ -5,6 +5,14 @@ import Header from './components/Header.vue'
 import Formulario from './components/Formulario.vue'
 import Paciente from './components/Paciente.vue'
 
+const alerta = reactive({
+    tipo: '',
+    mensaje: '',
+    display: false
+})
+
+const modificarAlerta = (nuevaAlerta) => Object.assign(alerta, nuevaAlerta);
+
 const paciente = reactive({
   id: null,
   mascota: '',
@@ -41,6 +49,16 @@ const editarPaciente = (id) => {
   Object.assign(paciente, pacienteEditar);
 }
 
+const eliminarPaciente = (id) => {
+  pacientes.value = pacientes.value.filter(paciente => paciente.id !== id)
+  modificarAlerta({
+    mensaje: "Paciente eliminado!",
+    tipo: "error",
+    display: true
+  })
+  setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000)
+}
+
 const modificarModo = (nuevoModo) => modo.value = nuevoModo
 </script>
 
@@ -56,7 +74,9 @@ const modificarModo = (nuevoModo) => modo.value = nuevoModo
       v-model:alta="paciente.alta"
       v-model:sintomas="paciente.sintomas"
       :modo="modo"
+      :alerta="alerta"
       @modificar-modo="modificarModo"
+      @modificar-alerta="modificarAlerta"
       @guardar-paciente="guardarPaciente" />
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">
@@ -69,6 +89,7 @@ const modificarModo = (nuevoModo) => modo.value = nuevoModo
           <Paciente
           :paciente="infoPaciente"
           @editar-paciente="editarPaciente"
+          @eliminar-paciente="eliminarPaciente"
           />
         </div>
         <div v-else>

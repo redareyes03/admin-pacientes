@@ -1,12 +1,7 @@
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import Alerta from './Alerta.vue'
     
-    const alerta = reactive({
-        tipo: '',
-        mensaje: '',
-        display: false
-    })
 
     const props = defineProps({
         mascota: {
@@ -32,32 +27,49 @@ import Alerta from './Alerta.vue'
         modo: {
             type: String, 
             required: true
+        },
+        alerta: {
+            type: Object,
+            required: true
         }
     })
 
 
-    const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente', 'modificar-modo' ])
+    const emit = defineEmits(['update:mascota', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente', 'modificar-modo', 'modificar-alerta' ])
     
+    
+    
+
     const validar = () => {
         if(Object.values(props).includes('')){
-            alerta.mensaje = "Todos los campos son obligatorios"
-            alerta.tipo = "error";
-            alerta.display = true;
-            setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000 )
+            emit('modificar-alerta', {
+                mensaje : "Todos los campos son obligatorios",
+                tipo : "error",
+                display : true
+            })
+            setTimeout(() => emit('modificar-alerta', {...props.alerta, display: false}), 2000 )
             return
         }
 
         emit('guardar-paciente')
+
         if(props.modo === "editar"){
-            alerta.mensaje = "Paciente actualizado!"
+            emit('modificar-alerta', {
+                mensaje : "Paciente actualizado!",
+                tipo : "exito",
+                display : true
+            })
         }else{
-            alerta.mensaje = "Paciente guardado!"
+            emit('modificar-alerta', {
+                mensaje : "Paciente registrado!",
+                tipo : "exito",
+                display : true
+            })
         }
-        alerta.tipo="exito"
-        alerta.display=true
         emit('modificar-modo', 'registrar')
-        setTimeout(() => Object.assign(alerta, {...alerta, display: false}), 2000 )
+        setTimeout(() => emit('modificar-alerta', {...props.alerta, display: false}), 2000 )
     }
+
 </script>
 
 <template>

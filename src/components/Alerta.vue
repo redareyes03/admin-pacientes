@@ -13,14 +13,14 @@ const alertas = {
     exito: () => "bg-green-500"
 }
 
-const isError = computed(() => {
+const tipo = computed(() => {
     return alertas[props.alerta.tipo]()
 })
 </script>
 
 <template>
     <div
-    :class="isError"
+    :class="tipo"
     class="text-white text-center p-3 uppercase font-bold mt-3 rounded-md">
     {{ alerta.mensaje }}</div>
 </template>
